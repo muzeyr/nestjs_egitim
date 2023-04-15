@@ -4,7 +4,7 @@ import { Repository } from 'typeorm';
 import { User } from './entities/user.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { v4 as uuidv4 } from 'uuid';
-import { UpdateUserDto } from './dto/update-user.dto copy';
+import { UpdateUserDto } from './dto/update-user.dto';
 import { IsDefined } from 'class-validator';
 @Injectable()
 export class UserService {
