@@ -8,51 +8,40 @@ import { UpdateUserDto } from './dto/update-user.dto copy';
 import { IsDefined } from 'class-validator';
 @Injectable()
 export class UserService {
-    
-    
-    private readonly logger: Logger = new Logger(this.constructor.name);
+  private readonly logger: Logger = new Logger(this.constructor.name);
 
-    constructor(
-        @InjectRepository(User)
-        private readonly userRepository: Repository<User>){
+  constructor(
+    @InjectRepository(User)
+    private readonly userRepository: Repository<User>,
+  ) {}
 
-        }
+  async activeUsers(): Promise<User[]> {
+    return await this.userRepository.find();
+  }
 
-    async activeUsers() {
-        return await this.userRepository.find();
+  async create(createUserDto: CreateUserDto) {
+    const newUser = await this.userRepository.create();
+    newUser.id = uuidv4();
+    newUser.email = createUserDto.email;
+    newUser.name = createUserDto.name;
+    return await this.userRepository.save(newUser);
+  }
+
+  async update(updateUserDto: UpdateUserDto) {
+    const user = await this.userRepository.findOne({
+      where: {
+        id: updateUserDto.id,
+      },
+    });
+    if (user) {
+      user.name = updateUserDto.name;
+      user.email = updateUserDto.email;
+      return await this.userRepository.save(user);
     }
+    return null;
+  }
 
-    async create(createUserDto: CreateUserDto) {
-         
-        const newUser = await this.userRepository.create();
-        newUser.id = uuidv4();
-        newUser.email = createUserDto.email;
-        newUser.name = createUserDto.name;
-        await this.userRepository.save(newUser);
-
-        this.logger.warn(JSON.stringify(newUser));
-        return { message: 'Saved', newUser };
-
-    }
-    
-    async update(updateUserDto: UpdateUserDto) {
-        const user = await this.userRepository.findOne({
-            where:{
-                id: updateUserDto.id,
-            }
-        });
-        if (user){
-            user.name = updateUserDto.name;
-            user.email = updateUserDto.email;
-        } else {
-
-        }
-        return await this.userRepository.save(user);
-    }
-
-    async delete(userId: string) {
-        return await this.userRepository.softDelete(userId);
-    }
-
-   
+  async delete(userId: string) {
+    return await this.userRepository.softDelete(userId);
+  }
 }

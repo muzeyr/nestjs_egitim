@@ -11,16 +11,30 @@ import { User } from './user/entities/user.entity';
   controllers: [AppController],
   providers: [AppService],
   imports: [
+    TypeOrmModule.forRootAsync({
+      useFactory: () => ({
+        type: 'mysql',
+        host: process.env.MYSQL_HOST,
+        port: parseInt(process.env.MYSQL_HOST),
+        username: process.env.MYSQL_USER,
+        password: process.env.MYSQL_PASSWORD,
+        database: process.env.MYSQL_DATABASE,
+        entities: [User],
+        synchronize: true,
+      }),
+    }),
+    /*
     TypeOrmModule.forRoot({
-      type:'mysql',
-      host:'localhost',
-      port:3306,
+      type: 'mysql',
+      host: 'localhost',
+      port: 3306,
       username: 'nestjs_user',
-      password:'nestjs_2023',
-      database:'nestjs_db',
+      password: 'nestjs_2023',
+      database: 'nestjs_db',
       entities: [User],
       synchronize: true,
     }),
+    */
     UserModule,
     ConfigModule.forRoot({
       load: [config],

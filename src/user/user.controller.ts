@@ -1,31 +1,49 @@
-import { Body, Controller, Delete, Get, Param, Post, Put } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Post,
+  Put,
+} from '@nestjs/common';
 import { UserService } from './user.service';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UpdateUserDto } from './dto/update-user.dto copy';
+import { NestJSReponse } from 'src/common/utils/nestjs.response';
 
 @Controller('user')
 export class UserController {
   constructor(private readonly userService: UserService) {}
 
   @Get()
-  activeUsers() {
-    return this.userService.activeUsers();
+  async activeUsers() {
+    return NestJSReponse.toResponseArray(await this.userService.activeUsers());
   }
   @Post()
-  create(@Body() createUserDto: CreateUserDto) {
-    return this.userService.create(createUserDto);
+  async create(@Body() createUserDto: CreateUserDto) {
+    return NestJSReponse.toResponse(
+      await this.userService.create(createUserDto),
+      'Kullanıcı başarıyla kaydedildi',
+    );
   }
   @Put(':id')
-  update(
+  async update(
     @Param('id') userId: string,
-    @Body() updateUserDto: UpdateUserDto) {
+    @Body() updateUserDto: UpdateUserDto,
+  ) {
     updateUserDto.id = userId;
-    return this.userService.update(updateUserDto);
+    return NestJSReponse.toResponse(
+      await this.userService.update(updateUserDto),
+      'Kullanıcı başarıyla güncellendi',
+    );
   }
 
   @Delete(':id')
-  delete(
-    @Param('id') userId: string) {
-    return this.userService.delete(userId);
+  async delete(@Param('id') userId: string) {
+    return NestJSReponse.toResponse(
+      await this.userService.delete(userId),
+      'Kullanıcı başarıyla silindi',
+    );
   }
 }
