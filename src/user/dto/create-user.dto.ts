@@ -1,5 +1,12 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import {
+  IsDateString,
+  IsEmail,
+  IsNotEmpty,
+  IsString,
+  MinLength,
+} from 'class-validator';
+import { IsAdult } from './user.validation';
 
 export class CreateUserDto {
   @IsNotEmpty()
@@ -7,6 +14,7 @@ export class CreateUserDto {
   @ApiProperty({
     example: 'Uzeyr OZCAN',
   })
+  @MinLength(3)
   name: string;
 
   @ApiProperty({
@@ -14,4 +22,11 @@ export class CreateUserDto {
   })
   @IsEmail()
   email: string;
+
+  @ApiProperty({
+    example: '1990-12-18',
+  })
+  @IsDateString()
+  @IsAdult({ message: 'Kayıt için 18 yaşından büyük olmalı' })
+  birthday: Date;
 }

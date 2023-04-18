@@ -24,6 +24,7 @@ export class UserService {
     newUser.id = uuidv4();
     newUser.email = createUserDto.email;
     newUser.name = createUserDto.name;
+    newUser.birthDay = createUserDto.birthday;
     return await this.userRepository.save(newUser);
   }
 
