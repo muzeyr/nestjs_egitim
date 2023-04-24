@@ -1,17 +1,9 @@
-import {
-  Column,
-  CreateDateColumn,
-  DeleteDateColumn,
-  Entity,
-  PrimaryColumn,
-  UpdateDateColumn,
-} from 'typeorm';
+import { UziBaseEntity } from 'src/entities/uzi.base.entity';
+import { Product } from 'src/product/entities/product.entity';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
-export class User {
-  @PrimaryColumn()
-  id: string;
-
+export class User extends UziBaseEntity {
   @Column()
   name: string;
 
@@ -21,12 +13,6 @@ export class User {
   @Column()
   birthDay: Date;
 
-  @CreateDateColumn()
-  createdAt!: Date;
-
-  @UpdateDateColumn()
-  updatedAt!: Date;
-
-  @DeleteDateColumn()
-  deletedAt!: Date;
+  @OneToMany(() => Product, (product) => product.user)
+  products: Product[];
 }

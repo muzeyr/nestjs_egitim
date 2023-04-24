@@ -6,6 +6,8 @@ import { ConfigModule } from '@nestjs/config';
 import config from './config/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from './user/entities/user.entity';
+import { ProductModule } from './product/product.module';
+import { Product } from './product/entities/product.entity';
 
 @Module({
   controllers: [AppController],
@@ -19,7 +21,7 @@ import { User } from './user/entities/user.entity';
         username: process.env.MYSQL_USER,
         password: process.env.MYSQL_PASSWORD,
         database: process.env.MYSQL_DATABASE,
-        entities: [User],
+        entities: [User, Product],
         synchronize: true,
       }),
     }),
@@ -39,6 +41,7 @@ import { User } from './user/entities/user.entity';
     ConfigModule.forRoot({
       load: [config],
     }),
+    ProductModule,
   ],
 })
 export class AppModule {}
