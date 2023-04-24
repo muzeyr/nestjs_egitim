@@ -1,24 +1,18 @@
-import { Column, CreateDateColumn, DeleteDateColumn, Entity, PrimaryColumn, UpdateDateColumn } from "typeorm";
-import { IsEmail } from 'class-validator';
+import { UziBaseEntity } from 'src/entities/uzi.base.entity';
+import { Product } from 'src/product/entities/product.entity';
+import { Column, Entity, OneToMany } from 'typeorm';
 
 @Entity()
-export class User {
-    @PrimaryColumn()
-    id: string;
+export class User extends UziBaseEntity {
+  @Column()
+  name: string;
 
-    @Column()
-    name: string;
+  @Column()
+  email: string;
 
-    @Column()
-    email: string;
+  @Column()
+  birthDay: Date;
 
-    @CreateDateColumn()
-    createdAt!: Date;
-
-    @UpdateDateColumn()
-    updatedAt!: Date;
-
-    @DeleteDateColumn()
-    deletedAt!: Date;
-
+  @OneToMany(() => Product, (product) => product.user)
+  products: Product[];
 }
