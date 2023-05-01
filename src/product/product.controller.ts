@@ -33,6 +33,15 @@ export class ProductController {
     return await this.productService.byUserId(userId);
   }
 
+  
+  @Get('byProductId/:productId')
+  @ApiOperation({
+    summary: "Active Product",
+  })
+  async geyByProductId(@Param('productId') productId: string) {
+    return await this.productService.byId(productId);
+  }
+
   @Post()
   async create(@Body() productCreateDto: ProductCreateDto) {
     return await this.productService.create(productCreateDto);
@@ -43,12 +52,21 @@ export class ProductController {
     @Param('id') id: string,
     @Body() productCreateDto: ProductCreateDto,
   ) {
-    return await this.productService.update(productCreateDto);
+    return await this.productService.update(id,productCreateDto);
   }
 
   @Delete(':id')
   async delete(@Param('id') id: string) {
     console.log(id);
     return await this.productService.delete(id);
+  }
+
+
+  @Get('byCategoryId/:catId')
+  @ApiOperation({
+    summary: "Active Product",
+  })
+  async byCategoryId(@Param('catId') catId: string) {
+    return await this.productService.byCatId(catId);
   }
 }
