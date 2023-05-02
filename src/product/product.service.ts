@@ -4,9 +4,12 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Product } from './entities/product.entity';
 import { Repository } from 'typeorm';
 import { User } from 'src/user/entities/user.entity';
+import { Category } from 'src/category/entities/category.entity';
 
 @Injectable()
 export class ProductService {
+
+
   constructor(
     @InjectRepository(Product)
     private readonly productRepository: Repository<Product>,
@@ -15,6 +18,9 @@ export class ProductService {
     const product = new Product();
     product.name = productCreateDto.name;
     product.user = new User({ id: productCreateDto.userId });
+    product.category = new Category({id:productCreateDto.categoryId});
+    product.categoryId = productCreateDto.categoryId;
+
     const result = await this.productRepository.save(product);
     return result;
   }
@@ -41,5 +47,30 @@ export class ProductService {
         userId,
       },
     });
+  }
+  async byProductId(productId: string) {
+    const result = await this.productRepository.find({
+      where:
+      {
+        id: productId
+      },
+      relations:['category','user']
+    })
+    return result;
+    
+  }
+  async byCategoryId(catId: string) {
+    const result = await this.productRepository.find({
+      where:
+      {
+        categoryId: catId
+      },
+      relations: ['user'],
+      order:{
+        createdAt: 'DESC',
+      }
+    })
+    return result;
+    
   }
 }

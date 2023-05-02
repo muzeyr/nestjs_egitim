@@ -33,6 +33,22 @@ export class ProductController {
     return await this.productService.byUserId(userId);
   }
 
+  @Get(':productId')
+  @ApiOperation({
+    summary: "Product detail",
+  })
+  async byProductId(@Param('productId') productId: string) {
+    return await this.productService.byProductId(productId);
+  }
+
+  @Get('category/:catId')
+  @ApiOperation({
+    summary: "Product detail",
+  })
+  async byCategoryId(@Param('catId') catId: string) {
+    return await this.productService.byCategoryId(catId);
+  }
+
   @Post()
   async create(@Body() productCreateDto: ProductCreateDto) {
     return await this.productService.create(productCreateDto);

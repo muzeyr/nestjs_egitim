@@ -1,3 +1,4 @@
+import { Category } from 'src/category/entities/category.entity';
 import { UziBaseEntity } from 'src/entities/uzi.base.entity';
 import { User } from 'src/user/entities/user.entity';
 import {
@@ -21,4 +22,10 @@ export class Product extends UziBaseEntity {
 
   @Column()
   userId: string;
+
+  @ManyToOne(()=>Category, {nullable:true})
+  category?: Category;
+
+  @Column()
+  categoryId: string;
 }

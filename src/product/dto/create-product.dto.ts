@@ -13,4 +13,10 @@ export class ProductCreateDto {
   })
   @IsString()
   userId: string;
+
+  @IsString()
+  @ApiProperty({
+    example: 'Category Id',
+  })
+  categoryId: string;
 }
