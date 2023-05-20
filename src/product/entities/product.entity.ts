@@ -28,4 +28,11 @@ export class Product extends UziBaseEntity {
 
   @Column()
   categoryId: string;
+
+  @Column()
+  description: string;
+
+  @Column()
+  imageUrl2: string;
+ 
 }
